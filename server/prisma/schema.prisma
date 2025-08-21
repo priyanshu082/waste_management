@@ -1,0 +1,138 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  name            String
+  password        String
+  role            Role             @default(CITIZEN)
+  points          Int              @default(0)
+  address         String?          // Added for profile page
+  phoneNumber     String?          // Added for profile page
+  preferredPickupTime String?      // Added for profile page
+  profileImageUrl String?          // Added for profile page
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  pickupRequests  PickupRequest[]
+  notifications   Notification[]
+  rewardRedemptions RewardRedemption[] // Added for rewards system
+}
+
+model PickupRequest {
+  id              String           @id @default(uuid())
+  address         String
+  wasteType       WasteType
+  notes           String?
+  imageUrl        String?
+  status          RequestStatus    @default(PENDING)
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  scheduledDate   DateTime?
+}
+
+model RecyclingCenter {
+  id              String           @id @default(uuid())
+  name            String
+  address         String
+  latitude        Float
+  longitude       Float
+  wasteTypes      WasteType[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model BinStatus {
+  id              String           @id @default(uuid())
+  binId           String           @unique
+  location        String
+  fullnessLevel   Int              // Percentage full (0-100)
+  lastUpdated     DateTime         @default(now())
+  status          BinStatusType    @default(NORMAL)
+  latitude        Float
+  longitude       Float
+}
+
+model CollectionSchedule {
+  id              String           @id @default(uuid())
+  area            String
+  dayOfWeek       Int              // 0 = Sunday, 1 = Monday, etc.
+  startTime       String
+  endTime         String
+  wasteTypes      WasteType[]
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model Notification {
+  id              String           @id @default(uuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  title           String
+  message         String
+  type            String           // e.g., 'INFO', 'WARNING', 'ERROR', 'PICKUP'
+  read            Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+}
+
+model Reward {
+  id              String           @id @default(uuid())
+  name            String
+  description     String
+  pointsCost      Int
+  imageUrl        String?
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  redemptions     RewardRedemption[]
+}
+
+model RewardRedemption {
+  id              String           @id @default(uuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  rewardId        String
+  reward          Reward           @relation(fields: [rewardId], references: [id])
+  pointsCost      Int              // Store the cost at time of redemption
+  redeemedAt      DateTime         @default(now())
+}
+
+enum Role {
+  ADMIN
+  CITIZEN
+  STAFF
+}
+
+enum WasteType {
+  GENERAL
+  RECYCLABLE
+  ORGANIC
+  HAZARDOUS
+  ELECTRONIC
+  CONSTRUCTION
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  SCHEDULED
+  COMPLETED
+  REJECTED
+}
+
+enum BinStatusType {
+  NORMAL
+  FULL
+  MAINTENANCE
+  OFFLINE
+}

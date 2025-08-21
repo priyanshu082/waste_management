@@ -1,0 +1,110 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 120 7% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 120 7% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 120 7% 8%;
+
+    --primary: 122 70% 33%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 122 61% 49%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 120 16% 97%;
+    --muted-foreground: 120 5% 45%;
+
+    --accent: 88 60% 50%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 120 6% 90%;
+    --input: 120 6% 90%;
+    --ring: 122 70% 33%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 122 70% 33%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 122 70% 33%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 88 60% 50%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 120 60% 25%;
+    --sidebar-ring: 122 70% 43%;
+  }
+
+  .dark {
+    --background: 120 15% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 120 15% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 120 15% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 122 70% 33%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 122 61% 29%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 120 15% 20%;
+    --muted-foreground: 120 5% 65%;
+
+    --accent: 88 60% 30%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 120 15% 20%;
+    --input: 120 15% 20%;
+    --ring: 122 70% 43%;
+
+    --sidebar-background: 120 15% 15%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 122 70% 33%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 88 60% 30%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 120 15% 20%;
+    --sidebar-ring: 122 70% 43%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .eco-card {
+    @apply bg-card rounded-xl shadow-md border border-border p-6 transition-all duration-200 hover:shadow-lg;
+  }
+  
+  .eco-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 transition-colors duration-200;
+  }
+  
+  .eco-input {
+    @apply bg-background border border-input rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-ring;
+  }
+}
